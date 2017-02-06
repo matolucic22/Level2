@@ -8,6 +8,15 @@ namespace Project.Service
 {
     public class VehicleService
     {
+        private static VehicleService Instance;
         
+        public static VehicleService GetInstance()
+        {
+                if (Instance == null)
+                {
+                    Instance = new VehicleService();
+                }
+                return Instance;
+        }
     }
 }
