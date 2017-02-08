@@ -6,6 +6,11 @@ using System.Data;
 using AutoMapper;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Collections;
+using System.Linq;
+using PagedList;
+using PagedList.Mvc;
+using System.Collections.Generic;
 
 namespace Project.Service
 {
@@ -26,7 +31,7 @@ namespace Project.Service
         public void CreateMake(VehicleMakeVM VehicleMakeVM)
         {
             
-               // VehicleMakeViewModel.Id = Guid.NewGuid();
+                VehicleMakeVM.Id = Guid.NewGuid();
                 db.VehiclMakes.Add(Mapper.Map<VehicleMake>(VehicleMakeVM));
                 db.SaveChanges();
 
@@ -47,10 +52,17 @@ namespace Project.Service
             db.SaveChanges();
         }
 
-        public VehicleMakeVM FindMake(Guid id)
+        
+
+        public IPagedList<VehicleMakeVM> FindMakeName(string search, int? page)
         {
-            VehicleMake vehicleMake = db.VehiclMakes.Find(id);
-            return Mapper.Map<VehicleMakeVM>(vehicleMake);
+            return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehiclMakes.Where(x => x.Name.Contains(search) || search == null)).ToPagedList(page ?? 1, 3);
+
+        }
+        public IPagedList<VehicleMakeVM> FindMakeAbrv(string search, int? page)
+        {
+            return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehicleModels.Where(x => x.Abrv.Contains(search) || search == null)).ToPagedList(page ?? 1, 3);
+
         }
 
 
@@ -62,7 +74,7 @@ namespace Project.Service
         public void CreateModel(VehicleModelVM VehicleModelVM)
         {
 
-            // VehicleMakeViewModel.Id = Guid.NewGuid();
+            VehicleModelVM.Id = Guid.NewGuid();
             db.VehicleModels.Add(Mapper.Map<VehicleModel>(VehicleModelVM));
             db.SaveChanges();
             
@@ -83,10 +95,15 @@ namespace Project.Service
             db.SaveChanges();
         }
 
-        public VehicleModelVM FindModel(Guid id)
+        public IPagedList<VehicleModelVM> FindModelName(string search, int? page)
         {
-            VehicleModel vehicleModel = db.VehicleModels.Find(id);
-            return Mapper.Map<VehicleModelVM>(vehicleModel);
+            return Mapper.Map<IEnumerable<VehicleModelVM>>( db.VehicleModels.Where(x => x.Name.Contains(search) || search == null)).ToPagedList(page ?? 1, 3);
+
+        }
+        public IPagedList<VehicleModelVM> FindModelAbrv(string search, int? page)
+        {
+            return Mapper.Map<IEnumerable<VehicleModelVM>>(db.VehicleModels.Where(x => x.Abrv.Contains(search) || search == null)).ToPagedList(page ?? 1, 3);
+
         }
 
 

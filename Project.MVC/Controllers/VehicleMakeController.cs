@@ -19,9 +19,17 @@ namespace Project.MVC.Controllers
         private VehicleContext db = new VehicleContext();
 
         // GET: VehicleMake
-        public ActionResult Index()
+        public ActionResult Index(string searchBy, string search, int? page)
         {
-            return View(db.VehiclMakes.ToList());
+            if (searchBy == "Name")
+            {
+                return View(VehicleService.GetInstance().FindMakeName(search, page));
+            }
+            else
+            {
+                return View(VehicleService.GetInstance().FindMakeAbrv(search, page));
+
+            }
         }
 
         // GET: VehicleMake/Details/5

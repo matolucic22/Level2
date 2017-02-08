@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Project.Service.Models.VehicleMake>
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Project.Service.ViewModels.VehicleMakeVM>
 
 @{
     ViewBag.Title = "Index";
@@ -9,13 +11,23 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+<p>
+    @using (Html.BeginForm("index", "VehicleMake", FormMethod.Get))
+    {
+    <b>Pretraži po:</b> @Html.RadioButton("searchBy", "Name", true) <text>Name</text>
+    @Html.RadioButton("searchBy", "Abrv") <text>Abrv</text> <br/>
+    @Html.TextBox("search") <input type="submit" value="search" />
+    }
+</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.First().Name)
+
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Abrv)
+            @Html.DisplayNameFor(model => model.First().Abrv)
         </th>
         <th></th>
     </tr>
@@ -30,10 +42,13 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+         <!--   @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Name", "Index", new {searchBy=Request.QueryString["searchBy"], search=Request["search"] }) |-->
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>
 }
-
 </table>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchBy = Request.QueryString["searchBy"], search = Request.QueryString["search"] }), new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true, DisplayItemSliceAndTotal=true })<!--Request je iz URLa-->
+
+<!--ovdi je trebao jedan div ići?-->

@@ -18,9 +18,18 @@ namespace Project.MVC.Controllers
         private VehicleContext db = new VehicleContext();
 
         // GET: VehicleModel
-        public ActionResult Index()
+        public ActionResult Index(string searchBy, string search, int? page)
         {
-            return View(db.VehicleModels.ToList());
+            if (searchBy == "Name")
+            {
+                return View(VehicleService.GetInstance().FindModelName(search, page));
+            }
+            else
+            {
+                return View(VehicleService.GetInstance().FindModelAbrv(search, page));
+
+            }
+           
         }
 
         // GET: VehicleModel/Details/5
