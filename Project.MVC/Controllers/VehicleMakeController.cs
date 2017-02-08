@@ -8,8 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using Project.Service.DAL;
 using Project.Service.Models;
-
-
+using Project.Service;
+using Project.Service.ViewModels;
+using AutoMapper;
 
 namespace Project.MVC.Controllers
 {
@@ -49,17 +50,20 @@ namespace Project.MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Abrv")] VehicleMake vehicleMake)
+        public ActionResult Create([Bind(Include = "Id,Name,Abrv")] VehicleMakeVM vehicleMakeVM)
         {
             if (ModelState.IsValid)
             {
-                vehicleMake.Id = Guid.NewGuid();
-                db.VehiclMakes.Add(vehicleMake);
-                db.SaveChanges();
+               
+                VehicleService.GetInstance().CreateMake(vehicleMakeVM);
                 return RedirectToAction("Index");
             }
+            else
+            {
+                ModelState.AddModelError("", "Krivo unesen maker");
+            }
 
-            return View(vehicleMake);
+            return View(vehicleMakeVM);
         }
 
         // GET: VehicleMake/Edit/5
@@ -82,15 +86,14 @@ namespace Project.MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Abrv")] VehicleMake vehicleMake)
+        public ActionResult Edit([Bind(Include = "Id,Name,Abrv")] VehicleMakeVM vehicleMakeVM)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(vehicleMake).State = EntityState.Modified;
-                db.SaveChanges();
+                VehicleService.GetInstance().EditMake(vehicleMakeVM);
                 return RedirectToAction("Index");
             }
-            return View(vehicleMake);
+            return View(vehicleMakeVM);
         }
 
         // GET: VehicleMake/Delete/5
@@ -113,9 +116,7 @@ namespace Project.MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            VehicleMake vehicleMake = db.VehiclMakes.Find(id);
-            db.VehiclMakes.Remove(vehicleMake);
-            db.SaveChanges();
+            VehicleService.GetInstance().DeleteMake(id);
             return RedirectToAction("Index");
         }
 

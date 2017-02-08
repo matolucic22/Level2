@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
+
 namespace Project.MVC.App_Start
 {
     public static class MapConfig
@@ -14,8 +15,8 @@ namespace Project.MVC.App_Start
         {
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<VehicleMake, VehicleMakeViewModel>().ReverseMap();//source-destination
-                cfg.CreateMap<VehicleModel, VehicleModelViewModel>().ReverseMap();
+                cfg.CreateMap<VehicleMake, VehicleMakeVM>().ReverseMap();//source-destination
+                cfg.CreateMap<VehicleModel, VehicleModelVM>().ReverseMap();
              });
 
         }

@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using Project.Service.DAL;
 using Project.Service.Models;
+using Project.Service;
+using Project.Service.ViewModels;
 
 namespace Project.MVC.Controllers
 {
@@ -47,17 +49,15 @@ namespace Project.MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,IdVehicleMake,Name,Abrv")] VehicleModel vehicleModel)
+        public ActionResult Create([Bind(Include = "Id,IdVehicleMake,Name,Abrv")] VehicleModelVM vehicleModelVM)
         {
             if (ModelState.IsValid)
             {
-                vehicleModel.Id = Guid.NewGuid();
-                db.VehicleModels.Add(vehicleModel);
-                db.SaveChanges();
+                VehicleService.GetInstance().CreateModel(vehicleModelVM);
                 return RedirectToAction("Index");
             }
 
-            return View(vehicleModel);
+            return View(vehicleModelVM);
         }
 
         // GET: VehicleModel/Edit/5
@@ -80,15 +80,14 @@ namespace Project.MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,IdVehicleMake,Name,Abrv")] VehicleModel vehicleModel)
+        public ActionResult Edit([Bind(Include = "Id,IdVehicleMake,Name,Abrv")] VehicleModelVM vehicleModelVM)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(vehicleModel).State = EntityState.Modified;
-                db.SaveChanges();
+                VehicleService.GetInstance().EditModel(vehicleModelVM);
                 return RedirectToAction("Index");
             }
-            return View(vehicleModel);
+            return View(vehicleModelVM);
         }
 
         // GET: VehicleModel/Delete/5
@@ -111,9 +110,7 @@ namespace Project.MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            VehicleModel vehicleModel = db.VehicleModels.Find(id);
-            db.VehicleModels.Remove(vehicleModel);
-            db.SaveChanges();
+            VehicleService.GetInstance().DeleteModel(id);
             return RedirectToAction("Index");
         }
 
