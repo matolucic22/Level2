@@ -15,7 +15,8 @@
 <p>
     @using (Html.BeginForm("index", "VehicleMake", FormMethod.Get))
     {
-    <b>Pretraži po:</b> @Html.RadioButton("searchBy", "Name", true) <text>Name</text>
+    <b>Pretraži po:</b>
+     @Html.RadioButton("searchBy", "Name", true) <text>Name</text>
     @Html.RadioButton("searchBy", "Abrv") <text>Abrv</text> <br/>
     @Html.TextBox("search") <input type="submit" value="search" />
     }
@@ -23,11 +24,15 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.First().Name)
+            @Html.ActionLink("Name", "Index", new { search = Request.QueryString["search"], sortBy = ViewBag.SortNameMakeParameter, searchBy = Request.QueryString["searchBy"] })
+            
 
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.First().Abrv)
+            @Html.ActionLink("Abrv", "Index", new { search = Request.QueryString["search"], sortBy = ViewBag.SortAbrvMakeParameter, searchBy = Request.QueryString["searchBy"] })
+
+
+            
         </th>
         <th></th>
     </tr>

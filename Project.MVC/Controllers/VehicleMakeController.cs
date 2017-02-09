@@ -19,18 +19,21 @@ namespace Project.MVC.Controllers
         private VehicleContext db = new VehicleContext();
 
         // GET: VehicleMake
-        public ActionResult Index(string searchBy, string search, int? page, string sortBy)
+      public ActionResult Index(string searchBy, string search, int? page, string sortBy)//search-riječ koja dolazi iz buttona. page-koji je broj str ako je null (1), koliko elemenata u jednom(3), sortBy-kojim redom sortiraš, searchBy-radio
         {
-            if (searchBy == "Name")
+            ViewBag.SortNameMakeParameter = string.IsNullOrEmpty(sortBy) ? "Name_desc" : "";//if-than-else
+            ViewBag.SortAbrvMakeParameter = sortBy == "Abrv" ? "Abrv_desc" : "Abrv";
+            if (search == null)
             {
-                return View(VehicleService.GetInstance().FindMakeName(search, page));
+               return View(VehicleService.GetInstance().OperationsMake("", page, sortBy, ""));
             }
             else
             {
-                return View(VehicleService.GetInstance().FindMakeAbrv(search, page));
-
+               return View(VehicleService.GetInstance().OperationsMake(search, page, sortBy, searchBy));
             }
+
         }
+        
 
         // GET: VehicleMake/Details/5
         public ActionResult Details(Guid? id)

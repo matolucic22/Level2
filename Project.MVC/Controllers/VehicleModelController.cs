@@ -20,14 +20,15 @@ namespace Project.MVC.Controllers
         // GET: VehicleModel
         public ActionResult Index(string searchBy, string search, int? page, string sortBy)//search-riječ koja dolazi iz buttona. page-koji je broj str ako je null (1), koliko elemenata u jednom(3), sortBy-kojim redom sortiraš, searchBy-radio
         {
-          ViewBag.SortNameParameter = string.IsNullOrEmpty(searchBy) ? "Name desc" : "";
-          ViewBag.SortAbrvParameter = sortBy == "Abrv" ? "Abrv_desc" : "Abrv";
+            ViewBag.SortNameModel = sortBy == "MakeName" ? "MakeName_desc" : "MakeName";
+            ViewBag.SortNameModelParameter = string.IsNullOrEmpty(searchBy) ? "Name_desc" : "";//if than else
+            ViewBag.SortAbrvModelParameter = sortBy == "Abrv" ? "Abrv_desc" : "Abrv";
 
           //var VehicleModels = db.VehicleModels.AsQueryable();
 
             if (searchBy == null)
             {
-                return View(VehicleService.GetInstance().OperationsModel(search, page, sortBy, searchBy));
+                return View(VehicleService.GetInstance().OperationsModel("", page, sortBy, ""));
             }
             else
             {
