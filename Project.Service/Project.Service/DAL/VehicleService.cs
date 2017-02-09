@@ -15,7 +15,7 @@ using System.Collections.Generic;
 
 namespace Project.Service
 {
-    public class VehicleService
+    public class VehicleService:IVehicleService
     {
         private static VehicleService Instance;
         private VehicleContext db = new VehicleContext();
@@ -109,9 +109,6 @@ namespace Project.Service
 
 
 
-
-
-
         //Sad radim za model
 
 
@@ -199,6 +196,28 @@ namespace Project.Service
 
              }*/
 
+
+        public IEnumerable<VehicleMakeVM> GetVehicleMakes()
+        {
+
+            return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehiclMakes.ToList());
+        }
+        public IEnumerable<VehicleModelVM> GetVehicleModels()
+        {
+            return Mapper.Map<IEnumerable<VehicleModelVM>>(db.VehicleModels.ToList());
+        }
+
+        public VehicleMakeVM FindVehicleMake(Guid id)
+        {
+            VehicleMake vehicleMake = db.VehiclMakes.Find(id);
+            return Mapper.Map<VehicleMakeVM>(vehicleMake);//mapping iz source(vehicleMake model) u VehicleMakeViewModel
+
+        }
+        public VehicleModelVM FindVehicleModel(Guid id)
+        {
+            VehicleModel vehicleModel = db.VehicleModels.Find(id);
+            return Mapper.Map<VehicleModelVM>(vehicleModel);
+        }
 
 
 
