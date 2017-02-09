@@ -19,7 +19,7 @@ namespace Project.MVC.Controllers
         private VehicleContext db = new VehicleContext();
 
         // GET: VehicleMake
-        public ActionResult Index(string searchBy, string search, int? page)
+        public ActionResult Index(string searchBy, string search, int? page, string sortBy)
         {
             if (searchBy == "Name")
             {

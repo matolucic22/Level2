@@ -12,6 +12,7 @@ using PagedList;
 using PagedList.Mvc;
 using System.Collections.Generic;
 
+
 namespace Project.Service
 {
     public class VehicleService
@@ -52,18 +53,61 @@ namespace Project.Service
             db.SaveChanges();
         }
 
+
+        public IPagedList<VehicleMakeVM> OperationsMake(string search, int? page, string sortBy, string searchBy) //search-riječ koja dolazi iz buttona. page-koji je broj str ako je null (1), koliko elemenata u jednom(3), sortBy-kojim redom sortiraš searchBy radio
+        {
+           switch(searchBy)
+            {
+                case "Name":
+                    switch (sortBy)
+                    {
+                        case "Name_desc": return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehiclMakes.Where(x => x.Name.Contains(search) || search == null)).OrderByDescending(x=>x.Name).ToPagedList(page ?? 1, 3);
+                        case "Abrv":return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehiclMakes.Where(x => x.Name.Contains(search) || search == null)).OrderBy(x => x.Abrv).ToPagedList(page ?? 1, 3);
+                        case "Abrv_desc": return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehiclMakes.Where(x => x.Name.Contains(search) || search == null)).OrderByDescending(x => x.Abrv).ToPagedList(page ?? 1, 3);
+                        default: return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehiclMakes.Where(x => x.Name.Contains(search) || search == null)).OrderBy(x => x.Name).ToPagedList(page ?? 1, 3);
+
+                    }
+                case "Abrv":
+                    switch(sortBy)
+                    {
+                        case "Name_desc": return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehiclMakes.Where(x => x.Abrv.Contains(search) || search == null)).OrderByDescending(x => x.Name).ToPagedList(page ?? 1, 3);
+                        case "Abrv": return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehiclMakes.Where(x => x.Abrv.Contains(search) || search == null)).OrderBy(x => x.Abrv).ToPagedList(page ?? 1, 3);
+                        case "Abrv_desc": return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehiclMakes.Where(x => x.Abrv.Contains(search) || search == null)).OrderByDescending(x => x.Abrv).ToPagedList(page ?? 1, 3);
+                        default: return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehiclMakes.Where(x => x.Abrv.Contains(search) || search == null)).OrderBy(x => x.Name).ToPagedList(page ?? 1, 3);
+                    }
+                default:
+                    switch (sortBy)
+                    {
+                        case "Name_desc":return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehiclMakes.OrderByDescending(x => x.Name)).ToPagedList(page ?? 1, 3);
+                        case "Abrv": return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehiclMakes.OrderBy(x => x.Abrv)).ToPagedList(page ?? 1, 3);
+                        case "Abrv_desc": return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehiclMakes.OrderByDescending(x => x.Abrv)).ToPagedList(page ?? 1, 3);
+                        default: return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehiclMakes.OrderBy(x => x.Name)).ToPagedList(page ?? 1, 3);
+                    }
+            }
+
+        }
+
+
+
         
 
-        public IPagedList<VehicleMakeVM> FindMakeName(string search, int? page)
+        
+
+     /*   public IPagedList<VehicleMakeVM> FindMakeName(string search, int? page, string sortBy)
         {
-            return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehiclMakes.Where(x => x.Name.Contains(search) || search == null)).ToPagedList(page ?? 1, 3);
+           
+
+            return 
 
         }
         public IPagedList<VehicleMakeVM> FindMakeAbrv(string search, int? page)
         {
-            return Mapper.Map<IEnumerable<VehicleMakeVM>>(db.VehicleModels.Where(x => x.Abrv.Contains(search) || search == null)).ToPagedList(page ?? 1, 3);
+            return 
 
-        }
+        }*/
+
+
+
 
 
 
@@ -95,16 +139,51 @@ namespace Project.Service
             db.SaveChanges();
         }
 
-        public IPagedList<VehicleModelVM> FindModelName(string search, int? page)
+
+        public IPagedList<VehicleModelVM> OperationsModel(string search, int? page, string sortBy, string radioSearch) //search-riječ koja dolazi iz buttona. page-koji je broj str ako je null (1), koliko elemenata u jednom(3), sortBy-kojim redom sortiraš
         {
-            return Mapper.Map<IEnumerable<VehicleModelVM>>( db.VehicleModels.Where(x => x.Name.Contains(search) || search == null)).ToPagedList(page ?? 1, 3);
+            switch (searchBy)
+            {
+                case "Name":
+                    switch (sortBy)
+                    {
+                        case "Name_desc": return Mapper.Map<IEnumerable<VehicleModelVM>>(db.VehicleModels.Where(x => x.Name.Contains(search) || search == null)).OrderByDescending(x => x.Name).ToPagedList(page ?? 1, 3);
+                        case "Abrv": return Mapper.Map<IEnumerable<VehicleModelVM>>(db.VehicleModels.Where(x => x.Name.Contains(search) || search == null)).OrderBy(x => x.Abrv).ToPagedList(page ?? 1, 3);
+                        case "Abrv_desc": return Mapper.Map<IEnumerable<VehicleModelVM>>(db.VehicleModels.Where(x => x.Name.Contains(search) || search == null)).OrderByDescending(x => x.Abrv).ToPagedList(page ?? 1, 3);
+                        default: return Mapper.Map<IEnumerable<VehicleModelVM>>(db.VehicleModels.Where(x => x.Name.Contains(search) || search == null)).OrderBy(x => x.Name).ToPagedList(page ?? 1, 3);
+
+                    }
+                case "Abrv":
+                    switch (sortBy)
+                    {
+                        case "Name_desc": return Mapper.Map<IEnumerable<VehicleModelVM>>(db.VehicleModels.Where(x => x.Abrv.Contains(search) || search == null)).OrderByDescending(x => x.Name).ToPagedList(page ?? 1, 3);
+                        case "Abrv": return Mapper.Map<IEnumerable<VehicleModelVM>>(db.VehicleModels.Where(x => x.Abrv.Contains(search) || search == null)).OrderBy(x => x.Abrv).ToPagedList(page ?? 1, 3);
+                        case "Abrv_desc": return Mapper.Map<IEnumerable<VehicleModelVM>>(db.VehicleModels.Where(x => x.Abrv.Contains(search) || search == null)).OrderByDescending(x => x.Abrv).ToPagedList(page ?? 1, 3);
+                        default: return Mapper.Map<IEnumerable<VehicleModelVM>>(db.VehicleModels.Where(x => x.Abrv.Contains(search) || search == null)).OrderBy(x => x.Name).ToPagedList(page ?? 1, 3);
+                    }
+                default:
+                    switch (sortBy)
+                    {
+                        case "Name_desc": return Mapper.Map<IEnumerable<VehicleModelVM>>(db.VehicleModels.OrderByDescending(x => x.Name)).ToPagedList(page ?? 1, 3);
+                        case "Abrv": return Mapper.Map<IEnumerable<VehicleModelVM>>(db.VehicleModels.OrderBy(x => x.Abrv)).ToPagedList(page ?? 1, 3);
+                        case "Abrv_desc": return Mapper.Map<IEnumerable<VehicleModelVM>>(db.VehicleModels.OrderByDescending(x => x.Abrv)).ToPagedList(page ?? 1, 3);
+                        default: return Mapper.Map<IEnumerable<VehicleModelVM>>(db.VehicleModels.OrderBy(x => x.Name)).ToPagedList(page ?? 1, 3);
+                    }
+            }
 
         }
-        public IPagedList<VehicleModelVM> FindModelAbrv(string search, int? page)
-        {
-            return Mapper.Map<IEnumerable<VehicleModelVM>>(db.VehicleModels.Where(x => x.Abrv.Contains(search) || search == null)).ToPagedList(page ?? 1, 3);
+        /*     public IPagedList<VehicleModelVM> FindModelName(string search, int? page)
+             {
+                 return Mapper.Map<IEnumerable<VehicleModelVM>>( db.VehicleModels.Where(x => x.Name.Contains(search) || search == null)).ToPagedList(page ?? 1, 3);
 
-        }
+             }
+             public IPagedList<VehicleModelVM> FindModelAbrv(string search, int? page)
+             {
+                 return Mapper.Map<IEnumerable<VehicleModelVM>>(db.VehicleModels.Where(x => x.Abrv.Contains(search) || search == null)).ToPagedList(page ?? 1, 3);
+
+             }*/
+
+
 
 
     }

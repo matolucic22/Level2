@@ -18,15 +18,20 @@ namespace Project.MVC.Controllers
         private VehicleContext db = new VehicleContext();
 
         // GET: VehicleModel
-        public ActionResult Index(string searchBy, string search, int? page)
+        public ActionResult Index(string searchBy, string search, int? page, string sortBy)//search-riječ koja dolazi iz buttona. page-koji je broj str ako je null (1), koliko elemenata u jednom(3), sortBy-kojim redom sortiraš, searchBy-radio
         {
-            if (searchBy == "Name")
+          ViewBag.SortNameParameter = string.IsNullOrEmpty(searchBy) ? "Name desc" : "";
+          ViewBag.SortAbrvParameter = sortBy == "Abrv" ? "Abrv_desc" : "Abrv";
+
+          //var VehicleModels = db.VehicleModels.AsQueryable();
+
+            if (searchBy == null)
             {
-                return View(VehicleService.GetInstance().FindModelName(search, page));
+                return View(VehicleService.GetInstance().OperationsModel(search, page, sortBy, searchBy));
             }
             else
             {
-                return View(VehicleService.GetInstance().FindModelAbrv(search, page));
+                return View(VehicleService.GetInstance().OperationsModel(search, page, sortBy, searchBy));
 
             }
            
